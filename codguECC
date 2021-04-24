@@ -1,0 +1,22 @@
+from tinyec import registry
+import secrets
+curve=registry.get_curve('brainpoolP256r1')
+def compress_point(point):
+    return hex(point.x) + hex(point.y % 2)[2:]
+def ecc_calc_encryption_keys(X): 
+    Kc=secrets.randbelow(curve.field.n)
+    Y=Kc*curve.g
+    S = X*Kc 
+    return (S, Y)
+def ecc_calc_decryption_key(Kp, Y): 
+    S = Y* Kp 
+    return S 
+Kp = secrets.randbelow(curve.field.n)
+X = Kp*curve.g 
+print("Kp:", hex(Kp)) 
+print("X:", compress_point(X)) 
+(encryptKey, Y) = ecc_calc_encryption_keys(X) 
+print("Y:",compress_point(Y))  
+print("encryption key:",compress_point(encryptKey))
+decryptKey = ecc_calc_decryption_key (Kp, Y) 
+print("decryption key:",compress_point(decryptKey)) 
