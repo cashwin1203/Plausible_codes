@@ -9,7 +9,7 @@ pubKeyHex = privKey.public_key.to_hex()
 #print("Encryption public key:", pubKeyHex)
 print("Decryption private key:", privKeyHex)
 
-plaintext = b'Hello'
+plaintext = b'asdfhjklqwertyuiozxc'
 print("Plaintext:", plaintext)
 
 encrypted = encrypt(pubKeyHex, plaintext)
