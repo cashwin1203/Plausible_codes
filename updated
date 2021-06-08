@@ -1,0 +1,29 @@
+from ecies.utils import generate_eth_key
+from ecies import encrypt, decrypt
+from stegano import lsb
+import binascii
+
+privKey = generate_eth_key()
+privKeyHex = privKey.to_hex()
+pubKeyHex = privKey.public_key.to_hex()
+print("Encryption public key:", pubKeyHex)
+print("Decryption private key:", privKeyHex)
+
+plaintext = b'secret message'
+print("Plaintext:", plaintext)
+
+encrypted = encrypt(pubKeyHex, plaintext)
+x = binascii.hexlify(encrypted)
+print("Ciphertext:",x)
+y = x.decode('utf-8')
+print("Encrypted:", y)
+
+secret = lsb.hide("D:\deadpoets.jpg",y)
+secret.save("D:\deadpoets_new1.png")
+
+a = lsb.reveal("D:\deadpoets_new1.png")
+print(a)
+y1 = a.encode('utf-8')
+x1 = binascii.unhexlify(y1)
+decrypted = decrypt(privKeyHex, x1)
+print("Decrypted:", decrypted)
